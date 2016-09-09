@@ -12,5 +12,5 @@ main = Blueprint('main', __name__, template_folder='templates')
 
 @main.route("/hello")
 def hello():
-    return "Hello World!"
+    return "Hello Everyone!"
 
