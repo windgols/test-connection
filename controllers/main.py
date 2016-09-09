@@ -12,5 +12,5 @@ def main_route():
 
 @main.route("/hello")
 def hello():
-    return "Hello World!"
+    return "Hello Everyone!"
 
