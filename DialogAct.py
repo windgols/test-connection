@@ -1,5 +1,5 @@
 from __future__ import division
-import sys, math, re
+import sys, math
 class Instance:
     count=0
     def __init__(self,sentence,bags,sense):
@@ -9,6 +9,17 @@ class Instance:
         Instance.count += 1
 sense_dic = {}
 PS = {}
+def pred(item):
+   maximum = float('-inf')
+   label = ''
+   for k in PS:
+       score = PS[k]
+       for i in item:
+           score += sense_dic[k][i]
+       if score > maximum:
+           label = k
+           maximum = score
+   return label
 def processingdata(file, train):
     dataset = []
     sentence = ''
@@ -53,17 +64,28 @@ for k in PS:
 #start test
 accuracy = 0
 for item in test_set:
-   maximum = float('-inf')
-   label = ''
-   for k in PS:
-       score = PS[k]
-       for i in item.bags:
-           score += sense_dic[k][i]
-       if score > maximum:
-           label = k
-           maximum = score
+   label = pred(item.bags)
    if label == item.sense:
        accuracy += 1
 accuracy = accuracy/len(test_set)
 print 'Accuracy is {0:.3%}.'.format(accuracy)
-
+#write output
+f = open('DialogAct.test.out','w+')
+sentence = ''
+bag = []
+with open(sys.argv[2]) as test:
+    for line in test:
+        line = line.strip('\n')
+        if line.startswith('Advisor: '):
+            bag = sentence.split()
+            sense = line.split()[1]
+            if not bag:
+                bag = ['']
+            label = pred(bag)
+            new = '[{0}]'.format(label)
+            line = line.replace(sense,new)
+        elif line.startswith('Student:'):
+            sentence = line[9:]
+        else:
+            sentence = ''
+        f.write(line + '\n')
