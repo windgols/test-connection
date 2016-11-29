@@ -1,3 +1,4 @@
+#Name: Sheng Liu  Uniquename: liusheng
 from __future__ import division
 from sklearn import *
 import sys
@@ -11,7 +12,7 @@ for key,value in dic.iteritems():
     for item in value.split():
         coursenamelist.append(item)
 
-def processingdata(file):# {{{
+def processingdata(file):
     set = []
     newinstance = 0
     wordbag = []
@@ -52,9 +53,9 @@ def processingdata(file):# {{{
             newline = ''
             if tmp:
                 set.append(tmp)
-    return bag, set# }}}
+    return bag, set
 
-def buildfeature(inputset):# {{{
+def buildfeature(inputset):
     feature = []
     result = []
     for item in inputset:
@@ -96,11 +97,11 @@ def buildfeature(inputset):# {{{
             else:
                 category = 3
             result.append(category)
-    return feature , result# }}}
+    return feature , result
 
-with open(sys.argv[1]) as train:#'NLU.train' sys.argv[]
+with open(sys.argv[1]) as train:
     bag1, train_set = processingdata(train)
-with open(sys.argv[2]) as test:#'NUL.test'
+with open(sys.argv[2]) as test:
     bag2, test_set = processingdata(test)
 
 le = preprocessing.LabelEncoder()
